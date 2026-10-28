@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>애니고 급식 월드컵</title>
+<meta name="description" content="한국애니메이션고 점심 급식 중 1년에 두 번 이상 나온 메뉴 338개로 하는 급식 이상형 월드컵">
+<meta property="og:type" content="website">
+<meta property="og:title" content="애니고 급식 월드컵">
+<meta property="og:description" content="우리 학교 급식 338개 중 최애 메뉴를 골라줘! 우리 반 랭킹도 볼 수 있어요.">
+<meta property="og:image" content="assets/og.png">
+<meta name="theme-color" content="#e8432d">
+<link rel="icon" href="assets/icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=IBM+Plex+Sans+KR:wght@400;500;700&display=swap">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- 시작 화면 -->
+<main id="home" class="screen">
+  <header class="board">
+    <img class="mascot" src="assets/mascot.png" alt="" onerror="this.hidden=true">
+    <p class="eyebrow">한국애니메이션고등학교 · 점심</p>
+    <h1>급식<br>월드컵</h1>
+    <p class="lede">1년에 두 번 이상 나온 메뉴 <b id="total-count">338</b>개, 실제 식판 사진으로 붙어요.</p>
+  </header>
+
+  <section class="leader" id="leader" hidden>
+    <span class="leader-label">지금 우리 반 1위</span>
+    <img id="leader-img" alt="">
+    <div>
+      <strong id="leader-name"></strong>
+      <span id="leader-meta"></span>
+    </div>
+  </section>
+
+  <form class="name-step" id="name-form">
+    <label class="setup-title" for="player-name">이름부터 알려줘요</label>
+    <p class="setup-hint">랭킹이랑 댓글에 이 이름으로 남아요.</p>
+    <div class="name-row">
+      <input id="player-name" maxlength="12" placeholder="예: 3반 김애니" autocomplete="nickname" required>
+      <button class="btn primary small" type="submit">확인</button>
+    </div>
+  </form>
+
+  <section class="setup" id="setup" hidden>
+    <div class="who">
+      <span><b id="who-name"></b> 님, 반가워요</span>
+      <button class="link-btn" id="rename-btn" type="button">이름 바꾸기</button>
+    </div>
+    <h2 class="setup-title">몇 강으로 할까요?</h2>
+    <div class="rounds" id="rounds" role="radiogroup" aria-label="라운드 선택"></div>
+    <p class="setup-hint" id="round-hint"></p>
+    <button class="btn primary" id="start-btn">시작하기</button>
+  </section>
+  <button class="btn ghost" id="rank-btn">우리 반 랭킹 보기</button>
+
+  <footer class="credit">
+    사진·식단: 한국애니메이션고 홈페이지 급식안내, 나이스 교육정보 개방포털 (2023.03 ~ 2026.10)
+  </footer>
+</main>
+
+<!-- 게임 화면 -->
+<main id="game" class="screen" hidden>
+  <div class="game-top">
+    <button class="icon-btn" id="quit-btn" aria-label="처음으로">✕</button>
+    <div class="round-info">
+      <span class="round-name" id="round-name">32강</span>
+      <span class="round-step" id="round-step">1/16</span>
+    </div>
+    <button class="icon-btn" id="undo-btn" aria-label="되돌리기">↶</button>
+  </div>
+  <div class="progress"><span id="progress-bar"></span></div>
+  <div class="arena" id="arena">
+    <button class="pick" id="pick-a"></button>
+    <span class="vs">VS</span>
+    <button class="pick" id="pick-b"></button>
+  </div>
+</main>
+
+<!-- 결과 화면 -->
+<main id="result" class="screen" hidden>
+  <div class="win-head">
+    <img class="trophy" src="assets/trophy.png" alt="" onerror="this.hidden=true">
+    <p class="eyebrow" id="win-round">32강 우승</p>
+    <p class="win-player" id="win-player"></p>
+    <h1 class="win-name" id="win-name"></h1>
+  </div>
+  <figure class="win-photo">
+    <img id="win-img" alt="">
+    <figcaption id="win-cap"></figcaption>
+  </figure>
+  <p class="sync" id="sync-msg"></p>
+
+  <div class="actions">
+    <button class="btn primary" id="share-btn">친구한테 공유하기</button>
+    <div class="row">
+      <button class="btn ghost" id="again-btn">다시 하기</button>
+      <button class="btn ghost" id="result-rank-btn">랭킹 보기</button>
+    </div>
+  </div>
+
+  <section class="comments" id="result-thread"></section>
+</main>
+
+<!-- 랭킹 화면 -->
+<main id="rank" class="screen" hidden>
+  <div class="rank-top">
+    <button class="icon-btn" id="rank-back" aria-label="뒤로">←</button>
+    <h1>우리 반 랭킹</h1>
+  </div>
+  <p class="rank-sum" id="rank-sum"></p>
+  <ol class="rank-list" id="rank-list"></ol>
+  <p class="empty" id="rank-empty" hidden>아직 기록이 없어요. 첫 판을 해서 1등을 정해주세요!</p>
+
+  <section class="recent">
+    <h2>누가 뭘 골랐나</h2>
+    <ul class="recent-list" id="recent-list"></ul>
+  </section>
+</main>
+
+<div class="toast" id="toast" role="status" hidden></div>
+
+<script src="config.js"></script>
+<script src="data/menus.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
