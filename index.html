@@ -114,12 +114,19 @@
     <button class="icon-btn" id="rank-back" aria-label="뒤로">←</button>
     <h1>우리 반 랭킹</h1>
   </div>
-  <p class="rank-sum" id="rank-sum"></p>
-  <ol class="rank-list" id="rank-list"></ol>
-  <p class="empty" id="rank-empty" hidden>아직 기록이 없어요. 첫 판을 해서 1등을 정해주세요!</p>
+  <div class="tabs" role="tablist" aria-label="랭킹 보기 방식">
+    <button class="tab" id="tab-board" role="tab" aria-selected="true" aria-controls="panel-board">순위표</button>
+    <button class="tab" id="tab-recent" role="tab" aria-selected="false" aria-controls="panel-recent">누가 골랐나</button>
+  </div>
 
-  <section class="recent">
-    <h2>누가 뭘 골랐나</h2>
+  <section id="panel-board" role="tabpanel" aria-labelledby="tab-board" class="panel">
+    <p class="rank-sum" id="rank-sum"></p>
+    <ol class="rank-list" id="rank-list"></ol>
+    <p class="empty" id="rank-empty" hidden>아직 기록이 없어요. 첫 판을 해서 1등을 정해주세요!</p>
+  </section>
+
+  <section id="panel-recent" role="tabpanel" aria-labelledby="tab-recent" class="panel" hidden>
+    <p class="rank-sum">최근 30판, 최신순</p>
     <ul class="recent-list" id="recent-list"></ul>
   </section>
 </main>

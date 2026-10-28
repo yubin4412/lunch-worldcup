@@ -390,8 +390,18 @@
     return li;
   }
 
+  function selectTab(name) {
+    const board = name !== 'recent';
+    $('tab-board').setAttribute('aria-selected', String(board));
+    $('tab-recent').setAttribute('aria-selected', String(!board));
+    $('panel-board').hidden = !board;
+    $('panel-recent').hidden = board;
+    local.set('wc_tab', board ? 'board' : 'recent');
+  }
+
   async function openRank() {
     show('rank');
+    selectTab(local.get('wc_tab', 'board'));
     $('rank-sum').textContent = '불러오는 중…';
     loadRecent();
     try {
@@ -410,7 +420,7 @@
   async function loadRecent() {
     const ul = $('recent-list');
     try {
-      const list = await store.recentGames(20);
+      const list = await store.recentGames(30);
       if (!list.length) {
         const li = document.createElement('li'); li.className = 'empty'; li.textContent = '아직 아무도 안 했어요.';
         ul.replaceChildren(li);
@@ -443,6 +453,8 @@
   $('result-rank-btn').onclick = openRank;
   $('rank-back').onclick = () => { show('home'); renderLeader(); };
   $('share-btn').onclick = share;
+  $('tab-board').onclick = () => selectTab('board');
+  $('tab-recent').onclick = () => selectTab('recent');
   document.addEventListener('keydown', e => {
     if ($('game').hidden) return;
     if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') choose('a');
